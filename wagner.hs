@@ -16,6 +16,13 @@ lev s lens t lent | lens == 0 = lens
                             ss = s !! (lens-1)
                             tt = t !! (lent -1)
 
+-- Werner-Fischer algorithm
+wf :: [Char] ->Int ->[Char] ->Int ->[[Int]]
+wf s lens t lent = matrix lens lent 0
+
+matrix :: Int ->Int ->a ->[[a]]
+matrix n m = replicate m . replicate n
+
 
 cost :: Char ->Char ->Int
 cost s t | s == t = 0
