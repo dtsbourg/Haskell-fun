@@ -2,18 +2,22 @@ module StringDist where
 
 main :: IO ()
 main = do
-        putStrLn $ show $ stringdist "sitting" "kitten" "dlev"
-        putStrLn $ show $ ng 2 "Hello"
+        putStrLn $ show $ stringdist "sitting" "kitten" "ndist"
 
 stringdist :: [Char] ->[Char] ->[Char]->Int
 stringdist s t "lev" = lev s (length s) t (length t)
 stringdist s t "ham" | (length s) == (length t) = ham s t
                      | otherwise = error "Can't compute Hamming dist for strings of unequal lengths"
 stringdist s t "dlev" = dlev s (length s) t (length t)
+stringdist s t "ndist" = ndist 2 s t
 
 --N-grams
-ng :: Int ->[Char] ->[[Char]]
-ng n s = take q s : ng (tail s)
+ndist :: Int ->[Char] ->[Char] ->Int
+ndist n s t = length ( filter (`elem` (ngram n s)) (ngram n t) )
+
+ngram :: Int ->[Char] ->[[Char]]
+ngram n s | (length s >= n) = take n s : ngram n (tail s)
+          | otherwise = []
 
 -- Hamming distance
 ham :: [Char] ->[Char] ->Int
