@@ -2,10 +2,20 @@ module StringDist where
 
 main :: IO ()
 main = do
-        putStrLn $ show $ stringdist "hello" "goodbye" "lev"
+        putStrLn $ show $ stringdist "haplo" "hello" "ham"
 
 stringdist :: [Char] ->[Char] ->[Char]->Int
 stringdist s t "lev" = lev s (length s) t (length t)
+stringdist s t "ham" | (length s) == (length t) = ham s t
+                     | otherwise = error "Can't compute Hamming dist for strings of unequal lengths"
+
+-- Hamming distance
+ham :: [Char] ->[Char] ->Int
+ham s t = length $ filter not (zipWith (==) s t)
+
+-- Damerau-Levenshtein distance
+
+--
 
 -- Levenshtein distance
 lev :: [Char] ->Int ->[Char] ->Int ->Int
