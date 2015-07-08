@@ -2,7 +2,7 @@ module StringDist where
 
 main :: IO ()
 main = do
-        putStrLn $ show $ stringdist "sitting" "kitten" "ndist"
+        putStrLn $ show $ fstringdist "abcde" "abdcde" "jac"
 
 stringdist :: [Char] ->[Char] ->[Char]->Int
 stringdist s t "lev" = lev s (length s) t (length t)
@@ -11,13 +11,25 @@ stringdist s t "ham" | (length s) == (length t) = ham s t
 stringdist s t "dlev" = dlev s (length s) t (length t)
 stringdist s t "ndist" = ndist 2 s t
 
+fstringdist :: [Char] ->[Char] ->[Char]->Float
+fstringdist s t "jac" = jac 2 s t
+
 --N-grams
 ndist :: Int ->[Char] ->[Char] ->Int
-ndist n s t = length ( filter (`elem` (ngram n s)) (ngram n t) )
+ndist n s t = length $ filter (`elem` (ngram n s)) (ngram n t)
 
 ngram :: Int ->[Char] ->[[Char]]
 ngram n s | (length s >= n) = take n s : ngram n (tail s)
           | otherwise = []
+
+-- Jaccard distance
+jac :: Int ->[Char] ->[Char] ->Float
+jac n [] t = 1.0
+jac n s t = 1.0 - ((fromIntegral (ndist n s t))/(fromIntegral (length (ncomb n s t))))
+
+ncomb :: Int ->[Char] ->[Char] ->[[Char]]
+ncomb n s t = zipWith (not . elem) (ngram n s) (ngram n t)
+
 
 -- Hamming distance
 ham :: [Char] ->[Char] ->Int
